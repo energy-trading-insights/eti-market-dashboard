@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>先物パッケージ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F3EC;--surface:#FBF9F4;--line:#DDD5C4;--ink:#2A2620;--sub:#6E665A;--mute:#A89F8C;--navy:#2A2620}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',"Yu Gothic UI","Meiryo",system-ui,sans-serif;font-size:14px;line-height:1.7}
+h1,h2{font-family:'Shippori Mincho',"Yu Mincho",serif;font-weight:600}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px 48px}
+header{padding:26px 0 6px}
+h1{margin:0;font-size:28px;color:var(--navy)}
+.asof{margin:2px 0 0;color:var(--sub)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:14px 16px;min-width:0}
+.tl{font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px}
+.tl i,.legend i,.tip i{width:10px;height:10px;border-radius:2px;display:inline-block;flex:none}
+.tm{font-size:12.5px;color:var(--sub);margin-top:2px}
+.tv{font-size:30px;font-weight:500;line-height:1.3;font-family:'Lora',Georgia,serif;font-variant-numeric:tabular-nums lining-nums}
+.tv span{font-size:13px;font-weight:400;color:var(--sub);margin-left:4px}
+.tc{font-size:13px;font-variant-numeric:tabular-nums}
+.ts{font-size:12.5px;color:var(--mute);font-variant-numeric:tabular-nums}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:16px;margin-top:14px}
+h2{margin:0;font-size:18px;color:var(--navy)}
+.cap{margin:0 0 8px;font-size:12.5px;color:var(--sub)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink);margin:2px 0 4px}
+.legend span,.tip div{display:flex;align-items:center;gap:6px}
+.plot{position:relative}
+.plot.wide{min-width:640px}
+svg{display:block;width:100%;height:auto}
+.grid{stroke:#E9E3D6;stroke-width:1}
+.past{fill:#EFEADF}
+.now{stroke:#A89F8C;stroke-width:1;stroke-dasharray:3 3}
+.ax{font-size:11px;fill:var(--mute)}
+.zone{font-size:11px;fill:var(--sub)}
+.dl{font-size:12px;fill:var(--ink);font-weight:700}
+.cross{stroke:#6E665A;stroke-width:1}
+.tip{position:absolute;top:34px;pointer-events:none;background:#FBF9F4;border:1px solid var(--line);border-radius:3px;padding:6px 9px;
+ font-size:12px;box-shadow:none;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1.5}
+.tip b{display:block}
+.key{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin:8px 0 0}
+.key span{display:flex;align-items:center;gap:6px}
+.key svg{width:34px;height:10px;flex:none}
+details{margin-top:10px}
+summary{cursor:pointer;font-size:13px;color:var(--sub)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;min-width:460px;margin-top:8px}
+th,td{padding:5px 14px;border-top:1px solid var(--line);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+thead th{border-top:none;color:var(--sub)}
+th[scope=row],thead th:first-child,td.k,thead th.k{text-align:left;font-weight:400}
+td.k{color:var(--sub)}
+.more{margin-top:14px;font-size:13px;color:var(--sub)}
+footer{margin-top:18px;font-size:12px;color:var(--mute)}
+
+body{background:#f1f4f9}
+.hero{position:relative;overflow:hidden;color:#fff;padding:38px 0 96px;
+ background:radial-gradient(900px 380px at 88% -20%,rgba(147,197,253,.38),transparent 62%),
+            radial-gradient(700px 300px at -10% 120%,rgba(99,102,241,.18),transparent 60%),
+            linear-gradient(135deg,#0b1f3a 0%,#14306a 52%,#1F4E8C 100%)}
+.hero::before{content:"";position:absolute;inset:0;opacity:.13;
+ background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);
+ background-size:44px 44px;-webkit-mask-image:linear-gradient(180deg,#000,transparent 85%);mask-image:linear-gradient(180deg,#000,transparent 85%)}
+.hero .wrap{position:relative;padding-bottom:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;color:#bfdbfe}
+.eyebrow b{background:#fff;color:#1F4E8C;border-radius:999px;padding:1px 10px;letter-spacing:.04em}
+.hero h1{color:#fff;font-size:34px;font-weight:800;letter-spacing:.02em;margin:8px 0 6px;line-height:1.3}
+.brand{display:flex;align-items:baseline;gap:10px;margin-top:14px;flex-wrap:wrap}
+.logo{font-size:44px;font-weight:900;letter-spacing:.22em;line-height:1;
+ background:linear-gradient(90deg,#ffffff,#bfdbfe 60%,#93c5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bv{font-size:15px;font-weight:800;color:#0b1f3a;background:#bfdbfe;border-radius:999px;padding:2px 12px}
+.br{font-size:12.5px;color:rgba(255,255,255,.75)}
+.brand+h1{font-size:20px;margin-top:6px;color:rgba(255,255,255,.92)}
+.ver{margin-left:auto;font-size:11px;font-weight:700;color:#1d4f91;background:#e8f0fb;border-radius:999px;padding:1px 9px}
+.lead{margin:0;max-width:680px;color:rgba(255,255,255,.86);font-size:14.5px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chip{font-size:12.5px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);border-radius:999px;padding:3px 12px;
+ -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.lift{margin-top:-64px;position:relative;z-index:1}
+.panel{border-radius:16px;border:1px solid rgba(12,33,64,.07);box-shadow:0 8px 28px rgba(12,33,64,.07)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.kpi{background:#fff;border-radius:18px;padding:18px 20px 14px;border:1px solid rgba(12,33,64,.06);
+ box-shadow:0 14px 36px rgba(12,33,64,.13);min-width:0}
+.kpi h2{margin:0;font-size:13.5px;color:var(--navy);display:flex;align-items:center;gap:10px}
+.ico{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;background:linear-gradient(135deg,#dbeafe,#e0f2fe);color:#1F4E8C}
+.ico svg{width:18px;height:18px}
+.when{font-size:12px;color:var(--mute);margin:2px 0 6px 42px}
+.row{display:grid;grid-template-columns:3em auto 1fr auto;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed #e3e8ec}
+.row:first-of-type{border-top:0}
+.ar{font-weight:700;font-size:13px;display:flex;align-items:center;gap:6px}
+.ar i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.num{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.01em;line-height:1.2}
+.num small{font-size:11.5px;font-weight:400;color:var(--mute);margin-left:3px}
+.spark{width:100%;max-width:120px;height:28px;justify-self:end}
+.dl{font-size:12px;font-weight:700;border-radius:999px;padding:1px 9px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.dl.up{background:#fdecea;color:#b42318}.dl.dn{background:#e7f0fb;color:#1f5fa8}.dl.fl{background:#eef1f4;color:var(--sub)}
+.verdict{border-radius:12px;padding:10px 14px;margin:2px 0 6px;font-weight:800;font-size:17px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.verdict.buy{background:linear-gradient(135deg,#ffedd5,#fff7ed);color:#b45309}
+.verdict.calm{background:linear-gradient(135deg,#eff6ff,#f5f9ff);color:#1F4E8C}
+.verdict span{font-size:12.5px;font-weight:400;color:var(--sub)}
+.sec{font-size:19px;color:var(--navy);margin:34px 0 4px;font-weight:800}
+.secsub{margin:0 0 14px;color:var(--sub);font-size:13.5px}
+.steps{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.step{display:flex;flex-direction:column;gap:12px;position:relative}
+.sn{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--navy);position:relative;z-index:1;background:#f1f4f9;padding-right:10px;width:max-content;max-width:100%}
+.sn b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:14px;flex:none;
+ background:linear-gradient(135deg,#1F4E8C,#3b82f6);box-shadow:0 4px 12px rgba(31,78,140,.35)}
+.sn span{font-size:12.5px;font-weight:400;color:var(--sub)}
+.step:not(:last-child)::after{content:"";position:absolute;top:15px;left:44px;right:-18px;height:2px;
+ background:linear-gradient(90deg,rgba(31,78,140,.45),rgba(31,78,140,0));z-index:0}
+.pc{background:#fff;border-radius:16px;padding:16px 18px;border:1px solid rgba(12,33,64,.07);box-shadow:0 6px 20px rgba(12,33,64,.06);
+ text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+a.pc:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(12,33,64,.14);border-color:rgba(31,78,140,.35)}
+a.pc:focus-visible{outline:2px solid #1F4E8C;outline-offset:3px}
+.pc h3{margin:0;font-size:16px;color:var(--navy);display:flex;align-items:center;gap:10px}
+.pc p{margin:0;font-size:13px;color:var(--sub);flex:1}
+.go{align-self:flex-start;font-size:12.5px;font-weight:700;color:#fff;background:#1F4E8C;border-radius:999px;padding:4px 14px}
+a.pc:hover .go{background:#173d6e}
+.pc.soon{border-style:dashed;box-shadow:none}.pc.soon .go{background:#eef1f4;color:var(--mute)}
+footer{margin-top:36px}
+@media (max-width:860px){.steps{grid-template-columns:1fr}.step::after{display:none}.hero h1{font-size:27px}}
+@media (prefers-reduced-motion:reduce){.pc{transition:none}a.pc:hover{transform:none}}
+.pos{color:#b42318;font-weight:700}
+.neg{color:#1f5fa8}
+.na{color:var(--mute)}
+.call{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:1px 10px;white-space:nowrap}
+.call.buy{background:#fff4e5;color:#b45309;border:1px solid #fcd9a8}
+.call.no{background:#e8f0fb;color:#1d4f91;border:1px solid #c3d6f2}
+.gp{display:inline-block;font-size:12.5px;font-weight:700;border-radius:999px;padding:1px 10px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gp.imb{background:#e8f0fb;color:#1d4f91}
+.gp.spt{background:#fff4e5;color:#b45309}
+.what{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:10px}
+.what>div{background:#fff;border:1px solid rgba(12,33,64,.08);border-radius:14px;padding:14px 16px}
+.what .wk{display:inline-block;font-size:11.5px;font-weight:800;color:#1d4f91;background:#e8f0fb;border-radius:999px;padding:1px 10px}
+.what b{display:block;font-size:15.5px;color:var(--navy);margin:6px 0 4px}
+.what p{margin:0;font-size:13px;color:var(--sub)}
+.what p b{display:inline;font-size:inherit;margin:0;color:var(--ink)}
+.rk{display:inline-block;font-size:10.5px;font-weight:700;color:var(--mute);border:1px dashed #c3ccd5;border-radius:999px;padding:0 7px;vertical-align:1px}
+.legend2{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--sub);margin:4px 0 10px}
+.policy{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.policy>div{border-radius:14px;padding:14px 16px}
+.policy .imb{background:linear-gradient(135deg,#e8f0fb,#f5f9ff);border:1px solid #c3d6f2}
+.policy .spt{background:linear-gradient(135deg,#fff4e5,#fffbf5);border:1px solid #fcd9a8}
+.policy b{display:block;font-size:15px;margin-bottom:2px}
+.policy .imb b{color:#1d4f91}.policy .spt b{color:#b45309}
+.policy p{margin:0;font-size:13px;color:var(--sub)}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:10px}
+.res>div{background:#fff;border:1px solid rgba(12,33,64,.08);border-radius:14px;padding:12px 16px}
+.res h3{margin:0 0 6px;font-size:14px;color:var(--navy);display:flex;align-items:center;gap:6px}
+.res h3 i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.res .ln{padding:8px 0;border-top:1px dashed #e3e8ec;font-size:12.5px;color:var(--sub)}
+.res .lab{font-weight:700;color:var(--ink);font-size:13px}
+.res .ln b{color:var(--ink)}
+.res .ln:first-of-type{border-top:0}
+.res .big{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+.res .imb .big,.res .big.imb{color:#1d4f91}.res .big.spt{color:#b45309}
+@media (max-width:640px){.policy{grid-template-columns:1fr}}
+.why{font-size:13px;color:var(--sub);margin-top:6px}
+.why b{color:var(--ink);font-variant-numeric:tabular-nums}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:8px 0 4px}
+.sum>div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px}
+.sum b{font-size:20px;font-variant-numeric:tabular-nums}
+td.c,th.c{text-align:center;white-space:nowrap}
+tr.hit td,tr.hit th{background:#fff7f6}
+ol.how{margin:6px 0 0;padding-left:1.4em;font-size:13.5px}
+ol.how li{margin:4px 0}
+
+.pkx-bar,.pkx-bar *,.pkx-sub,.pkx-sub *{box-sizing:border-box;margin:0;padding:0;font-family:"Yu Gothic UI","Meiryo",system-ui,sans-serif;line-height:1.5;letter-spacing:normal}
+.pkx-bar{position:sticky;top:0;z-index:50;background:linear-gradient(135deg,#0b1f3a 0%,#14306a 60%,#1F4E8C 100%);
+ box-shadow:0 2px 12px rgba(12,33,64,.18);width:100%}
+.pkx-bar.pkx-bleed,.pkx-sub.pkx-bleed{width:100vw;margin-left:calc(50% - 50vw)}
+.pkx-in{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:16px;min-height:52px}
+.pkx-brand{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:800;font-size:14px;white-space:nowrap}
+.pkx-brand b{background:#fff;color:#1F4E8C;border-radius:999px;padding:0 9px;font-size:11px;font-weight:800}
+.pkx-tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.pkx-tabs::-webkit-scrollbar{display:none}
+.pkx-tabs a{display:flex;align-items:baseline;gap:5px;white-space:nowrap;text-decoration:none;color:rgba(255,255,255,.82);
+ font-size:13px;font-weight:700;border-radius:999px;padding:6px 13px;transition:background .15s ease}
+.pkx-tabs a small{font-size:11px;font-weight:400;opacity:.85}
+.pkx-tabs a:hover{background:rgba(255,255,255,.14);color:#fff}
+.pkx-tabs a[aria-current="page"]{background:#fff;color:#1F4E8C}
+.pkx-tabs a:focus-visible{outline:2px solid #bfdbfe;outline-offset:2px}
+.pkx-sub{background:linear-gradient(135deg,#14306a,#1F4E8C);color:#fff;width:100%}
+.pkx-sub .pkx-in{min-height:0;padding-top:16px;padding-bottom:18px;flex-wrap:wrap;gap:4px 12px;align-items:baseline}
+.pkx-stage{font-size:11.5px;font-weight:800;color:#0b1f3a;background:#bfdbfe;border-radius:999px;padding:1px 10px}
+.pkx-name{font-size:22px;font-weight:800;color:#fff}
+.pkx-desc{flex-basis:100%;font-size:13px;color:rgba(255,255,255,.82)}
+@media (max-width:720px){.pkx-brand span{display:none}.pkx-in{gap:10px}}
+
+.pkx-bar{background:#F6F3EC;box-shadow:none;border-bottom:1px solid #DDD5C4}
+.pkx-brand{color:#2A2620;font-family:'Zen Kaku Gothic New',sans-serif}
+.pkx-brand b{background:#1F4E8C;color:#fff;border-radius:3px}
+.pkx-tabs a{color:#6E665A;border-radius:3px;font-family:'Zen Kaku Gothic New',sans-serif}
+.pkx-tabs a:hover{background:#EFEADF;color:#2A2620}
+.pkx-tabs a[aria-current="page"]{background:#1F4E8C;color:#fff}
+.pkx-sub{background:#EFEADF;color:#2A2620;border-bottom:1px solid #DDD5C4}
+.pkx-name{color:#2A2620;font-family:'Shippori Mincho',"Yu Mincho",serif;font-weight:600}
+.pkx-desc{color:#4A443A}
+.pkx-stage{background:#1F4E8C;color:#fff;border-radius:3px}
+
+body{background:#F6F3EC;font-family:'Zen Kaku Gothic New',"Yu Gothic UI","Meiryo",sans-serif}
+.hero{background:#F6F3EC;color:#2A2620;border-bottom:0}
+.hero::before{display:none}
+.hero h1,.brand+h1{color:#2A2620;font-family:'Shippori Mincho',"Yu Mincho",serif;font-weight:600}
+.lead{color:#4A443A}
+.chip{color:#6E665A;border:1px solid #DDD5C4;background:#FBF9F4;border-radius:3px}
+.logo{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:#1F4E8C}
+.bv{color:#fff;background:#1F4E8C;border-radius:3px}
+.br{color:#6E665A}
+.panel,.kpi,.pc,.what>div,.res>div,.sum>div,.policy>div,.tile{border-radius:3px;box-shadow:none}
+.kpi,.pc{background:#FBF9F4;border:1px solid #DDD5C4}
+.what>div,.res>div,.sum>div{background:#F6F3EC;border:1px solid #DDD5C4}
+a.pc:hover{transform:none;box-shadow:none;border-color:#BDB3A0}
+.ico{border-radius:3px}
+.go{border-radius:3px}
+.sn{background:#F6F3EC}
+.sn b{border-radius:3px;box-shadow:none;background:#1F4E8C}
+.step:not(:last-child)::after{background:#DDD5C4}
+.sec{font-family:'Shippori Mincho',"Yu Mincho",serif;font-weight:600}
+.num,.big2,.what b,.res .big,.sum b,.kpi .num{font-family:'Lora',Georgia,serif;font-variant-numeric:tabular-nums lining-nums}
+</style>
+</head>
+<body>
+<div class="pkx-bar"><div class="pkx-in"><a class="pkx-brand" href="package_futures.html"><b>有料</b><span>先物パッケージ</span></a><nav class="pkx-tabs" aria-label="先物パッケージのページ"><a href="index.html">← トップ</a><a href="package_futures.html" aria-current="page">入口</a><a href="package_futures_detail.html">いまの値段</a><a href="package_futures_weekly.html">週ごとの流れ</a><a href="package_futures_spread.html">地域と時期の差</a></nav></div></div>
+<header class="hero"><div class="wrap">
+<h1>先物パッケージ</h1>
+<p class="lead">電力先物を、いまの値段・週ごとの流れ・地域と時期の差まで。限月ごとの値動きを毎日確かめる1ページです。</p>
+<div class="chips"><span class="chip">清算値 2026年10月23日</span><span class="chip">比較 2026年10月22日</span><span class="chip">作成 2026-10-24 14:29</span></div>
+</div></header>
+<div class="wrap">
+<div class="lift"><div class="kpis"><div class="kpi"><h2><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c4 0 5-9 9-9s5 6 9 6"/><path d="M3 21h18"/></svg></span>期近の清算値（ベース）</h2><div class="when">2026年10月もの・線は先18か月のカーブ・右端は前日比</div><div class="row"><span class="ar"><i style="background:#2a78d6"></i>東</span><span class="num">26.11<small>円/kWh</small></span><svg class="spark" viewBox="0 0 120 28" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="g2a78d6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a78d6" stop-opacity=".28"/><stop offset="1" stop-color="#2a78d6" stop-opacity="0"/></linearGradient></defs><polygon points="2,27 2.0,12.2 8.6,4.0 15.2,5.6 21.8,6.3 28.4,8.5 34.9,15.7 41.5,21.8 48.1,22.3 54.7,19.9 61.3,17.0 67.9,16.4 74.5,17.2 81.1,21.3 87.6,21.0 94.2,20.0 100.8,21.5 107.4,21.9 114.0,25.0 114.0,27" fill="url(#g2a78d6)"/><polyline points="2.0,12.2 8.6,4.0 15.2,5.6 21.8,6.3 28.4,8.5 34.9,15.7 41.5,21.8 48.1,22.3 54.7,19.9 61.3,17.0 67.9,16.4 74.5,17.2 81.1,21.3 87.6,21.0 94.2,20.0 100.8,21.5 107.4,21.9 114.0,25.0" fill="none" stroke="#2a78d6" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><circle cx="114.0" cy="25.0" r="2.6" fill="#2a78d6"/></svg><span class="dl up">▲0.48</span></div><div class="row"><span class="ar"><i style="background:#199e70"></i>中部</span><span class="num">24.72<small>円/kWh</small></span><svg class="spark" viewBox="0 0 120 28" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="g199e70" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#199e70" stop-opacity=".28"/><stop offset="1" stop-color="#199e70" stop-opacity="0"/></linearGradient></defs><polygon points="2,27 2.0,13.1 8.6,4.0 15.2,5.2 21.8,6.4 28.4,7.7 34.9,16.6 41.5,22.0 48.1,22.5 54.7,20.0 61.3,17.8 67.9,17.2 74.5,18.0 81.1,21.3 87.6,21.0 94.2,20.0 100.8,21.4 107.4,21.9 114.0,25.0 114.0,27" fill="url(#g199e70)"/><polyline points="2.0,13.1 8.6,4.0 15.2,5.2 21.8,6.4 28.4,7.7 34.9,16.6 41.5,22.0 48.1,22.5 54.7,20.0 61.3,17.8 67.9,17.2 74.5,18.0 81.1,21.3 87.6,21.0 94.2,20.0 100.8,21.4 107.4,21.9 114.0,25.0" fill="none" stroke="#199e70" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><circle cx="114.0" cy="25.0" r="2.6" fill="#199e70"/></svg><span class="dl up">▲0.42</span></div><div class="row"><span class="ar"><i style="background:#d95926"></i>西</span><span class="num">18.99<small>円/kWh</small></span><svg class="spark" viewBox="0 0 120 28" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="gd95926" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d95926" stop-opacity=".28"/><stop offset="1" stop-color="#d95926" stop-opacity="0"/></linearGradient></defs><polygon points="2,27 2.0,15.4 8.6,6.5 15.2,6.0 21.8,4.0 28.4,7.0 34.9,15.8 41.5,24.3 48.1,25.0 54.7,21.9 61.3,12.8 67.9,11.9 74.5,13.2 81.1,17.8 87.6,17.1 94.2,15.8 100.8,17.8 107.4,18.4 114.0,22.7 114.0,27" fill="url(#gd95926)"/><polyline points="2.0,15.4 8.6,6.5 15.2,6.0 21.8,4.0 28.4,7.0 34.9,15.8 41.5,24.3 48.1,25.0 54.7,21.9 61.3,12.8 67.9,11.9 74.5,13.2 81.1,17.8 87.6,17.1 94.2,15.8 100.8,17.8 107.4,18.4 114.0,22.7" fill="none" stroke="#d95926" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><circle cx="114.0" cy="22.7" r="2.6" fill="#d95926"/></svg><span class="dl dn">▼0.06</span></div></div><div class="kpi"><h2><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 17h16"/><path d="M12 7v10"/><path d="M9 10l3-3 3 3M9 14l3 3 3-3"/></svg></span>地域の差と来年度もの</h2><div class="when">2026年10月もの（期近）の差</div><div class="sp"><span class="lb">東 − 西</span><span class="big2">+7.12<small>円/kWh</small></span></div><div class="sp"><span class="lb">中部 − 西</span><span class="big2">+5.73<small>円/kWh</small></span></div><div class="when" style="margin:8px 0 2px">2027年度もの（ベース）</div><div class="row"><span class="ar"><i style="background:#2a78d6"></i>東</span><span class="num" style="font-size:18px">21.30<small>円/kWh</small></span><span></span><span class="dl up">▲0.17</span></div><div class="row"><span class="ar"><i style="background:#199e70"></i>中部</span><span class="num" style="font-size:18px">20.60<small>円/kWh</small></span><span></span><span class="dl up">▲0.12</span></div><div class="row"><span class="ar"><i style="background:#d95926"></i>西</span><span class="num" style="font-size:18px">17.80<small>円/kWh</small></span><span></span><span class="dl up">▲0.63</span></div></div><div class="kpi"><h2><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span>よく動いた限月</h2><div class="when">2026年10月23日の前日比・上位3つ</div><div class="mv"><span class="mvn">1</span><span class="nm">東・日中(週間)<small>10/30の週・34.00円/kWh</small></span><span class="dl up">▲1.46円（+4.5%）</span></div><div class="mv"><span class="mvn">2</span><span class="nm">西・日中(週間)<small>10/30の週・28.18円/kWh</small></span><span class="dl up">▲1.20円（+4.5%）</span></div><div class="mv"><span class="mvn">3</span><span class="nm">東・ベース(週間)<small>10/30の週・29.48円/kWh</small></span><span class="dl up">▲0.98円（+3.4%）</span></div></div></div><h2 class="sec">3つの段階で使う</h2><p class="secsub">いまの値段を確かめ、週ごとの流れをつかみ、地域と時期の差で先を考えます。</p><div class="steps"><div class="step"><div class="sn"><b>1</b>いまの値段<span>限月ごとの清算値とカーブ</span></div><a class="pc" href="package_futures_detail.html"><h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c4 0 5-9 9-9s5 6 9 6"/></svg></span>先物の詳細</h3><p>全商品（ベース・日中・年度・週間）のフォワードカーブ、前日比のヒートマップ、値動きの上位、燃料・為替の市況。その日に何が動いたかを、限月ごとに確かめます。</p><span class="go">開く →</span></a></div><div class="step"><div class="sn"><b>2</b>週ごとの流れ<span>7日前からどう動いたか</span></div><a class="pc" href="package_futures_weekly.html"><h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span>週次比較</h3><p>7日前と比べた、電力先物と燃料の値動き。日々の上下ではなく、週単位の流れを見ます。</p><span class="go">開く →</span></a></div><div class="step"><div class="sn"><b>3</b>地域と時期の差<span>東西・商品・限月の間の差</span></div><a class="pc" href="package_futures_spread.html"><h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 17h16"/><path d="M12 7v10"/></svg></span>スプレッド分析</h3><p>エリア間（東西）や商品間の価格差と、その推移。事象の前と比べたカーブの変化も確かめられます。</p><span class="go">開く →</span></a><div class="pc soon"><h3><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 17h16"/><path d="M12 7v10"/></svg></span>先物カーブ分析</h3><p>東京先物のカーブの動きを、水準・傾き・曲がりに分けて見ます。</p><span class="go">準備中</span></div></div></div><section class="panel" style="margin-top:28px"><h2>値動きの大きかった限月</h2><p class="cap">2026年10月23日の清算値と前営業日との差（上位8件）。単位：円/kWh</p><div class="scroll"><table><thead><tr><th>商品</th><th class="k">限月</th><th>清算値</th><th>前営業日</th><th>前日比</th><th>変化率</th></tr></thead><tbody><tr><th scope="row">東・日中(週間)</th><td class="k">10/30の週</td><td>34.00</td><td>32.54</td><td class="up">▲1.46円</td><td>+4.5%</td></tr><tr><th scope="row">西・日中(週間)</th><td class="k">10/30の週</td><td>28.18</td><td>26.98</td><td class="up">▲1.20円</td><td>+4.5%</td></tr><tr><th scope="row">東・ベース(週間)</th><td class="k">10/30の週</td><td>29.48</td><td>28.50</td><td class="up">▲0.98円</td><td>+3.4%</td></tr><tr><th scope="row">西・日中(月次)</th><td class="k">2026年12月もの</td><td>28.19</td><td>27.21</td><td class="up">▲0.98円</td><td>+3.6%</td></tr><tr><th scope="row">中部・日中(月次)</th><td class="k">2026年12月もの</td><td>31.27</td><td>30.39</td><td class="up">▲0.88円</td><td>+2.9%</td></tr><tr><th scope="row">西・ベース(月次)</th><td class="k">2027年7月もの</td><td>20.05</td><td>19.38</td><td class="up">▲0.67円</td><td>+3.5%</td></tr><tr><th scope="row">西・ベース(月次)</th><td class="k">2027年8月もの</td><td>20.43</td><td>19.76</td><td class="up">▲0.67円</td><td>+3.4%</td></tr><tr><th scope="row">西・ベース(月次)</th><td class="k">2027年9月もの</td><td>19.92</td><td>19.27</td><td class="up">▲0.65円</td><td>+3.4%</td></tr></tbody></table></div></section><style>
+.mv{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 0;border-top:1px dashed #e3e8ec}
+.mv:first-of-type{border-top:0}
+.mv .mvn{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;background:#1F4E8C}
+.mv .nm{font-size:13px;font-weight:700;min-width:0}
+.mv .nm small{display:block;font-weight:400;color:var(--mute);font-size:11.5px}
+.big2{font-size:26px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--navy)}
+.big2 small{font-size:12px;font-weight:400;color:var(--mute);margin-left:4px}
+.sp{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding:6px 0}
+.sp .lb{font-size:12.5px;color:var(--sub);min-width:7.5em}
+td.up{color:#b42318;font-weight:700}td.dn{color:#1f5fa8;font-weight:700}
+</style></div>
+<footer>出所：日本取引所グループ（JPX）の清算値より作成。作成 2026-10-24 14:29。本ページの数値は参考値です。</footer>
+</div>
+</body>
+</html>
